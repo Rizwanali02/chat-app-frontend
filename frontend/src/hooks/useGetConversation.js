@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast";
+import { BaseUrl } from "../BaseUrl";
 
 const useGetConversations = () => {
 
@@ -10,7 +11,7 @@ const useGetConversations = () => {
         const getConversations = async () => {
             setLoading(true)
             try {
-                const res = await fetch("/api/users")
+                const res = await fetch(`${BaseUrl}/api/users`)
                 const data = await res.json()
                 if (data.error) throw new Error(error.message)
                 setConversations(data);
