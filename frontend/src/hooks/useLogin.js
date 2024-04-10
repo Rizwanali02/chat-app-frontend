@@ -7,6 +7,9 @@ import { BaseUrl } from "../BaseUrl";
 const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const { setAuthUser } = useAuthContext();
+    const jwtCookie = document.cookie.split('; ').find(row => row.startsWith('jwt='));
+    const yourJwtCookieValue = jwtCookie ? jwtCookie.split('=')[1] : null;
+
 
     const login = async (username, password) => {
         const success = handleInputErrors(username, password);
@@ -18,7 +21,8 @@ const useLogin = () => {
             const res = await fetch(`${BaseUrl}/api/auth/login`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Cookie": `jwtCookie=${yourJwtCookieValue}` 
                 },
                 body: JSON.stringify({
                     username,
