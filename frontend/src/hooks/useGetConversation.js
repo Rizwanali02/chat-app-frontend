@@ -6,13 +6,18 @@ const useGetConversations = () => {
 
     const [loading, setLoading] = useState(false);
     const [conversations, setConversations] = useState([]);
-    const user = localStorage.getItem("chat-user");
+    const user = JSON.parse(localStorage.getItem("chat-user"));
+    console.log(user);
 
     useEffect(() => {
         const getConversations = async () => {
             setLoading(true)
             try {
-                const res = await fetch(`${BaseUrl}/api/users/${user?._id}`)
+                const res = await fetch(`${BaseUrl}/api/users`, {
+                    headers: {
+                        Authorization: `Bearer ${user?.token}`,
+                    },
+                })
                 const data = await res.json()
                 if (data.error) throw new Error(error.message)
                 setConversations(data);
